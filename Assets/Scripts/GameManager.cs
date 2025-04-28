@@ -15,9 +15,14 @@ public class GameManager : MonoBehaviour {
 
     public GameObject Panel_GameOver;
     public Button btn_Reset;
+    public Text txt_Score;
+
+    public Text txt_GameScore;
 
     List<GameObject> planes;
     GameObject nowPlane;
+
+    int score;
 
     void Awake() {
         instance = this;
@@ -25,6 +30,9 @@ public class GameManager : MonoBehaviour {
         planePos = Vector3.zero;
 
         btn_Reset.onClick.AddListener(() => {
+            score = 0;
+            txt_GameScore.text = score.ToString();
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
 
@@ -32,6 +40,8 @@ public class GameManager : MonoBehaviour {
 
         SpawnPlane();
         SpawnPlayer();
+
+        score = 0;
     }
 
     void SpawnPlayer() {
@@ -45,7 +55,7 @@ public class GameManager : MonoBehaviour {
 
         planePos.x += Random.Range(3f, 7f);
 
-        if (planes.Count <= 5) {
+        if (planes.Count < 3) {
             planes.Add(plane);
         } else {
             Destroy(planes[0]);
@@ -55,6 +65,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameOver() {
+        txt_Score.text = "分数: " + score.ToString();
         Panel_GameOver.SetActive(true);
     }
 
@@ -68,5 +79,10 @@ public class GameManager : MonoBehaviour {
         } else {
             return false;
         }
+    }
+
+    public void AddScore() {
+        score += 1;
+        txt_GameScore.text = score.ToString();
     }
 }

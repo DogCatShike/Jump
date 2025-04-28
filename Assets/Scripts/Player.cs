@@ -39,6 +39,7 @@ public class Player : MonoBehaviour {
             var plane = collision.gameObject;
             bool isNewPlane = GameManager.instance.IsNewPlane(plane);
             if (isNewPlane) {
+                GameManager.instance.AddScore();
                 GameManager.instance.SpawnPlane();
             }
         }
