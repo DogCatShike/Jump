@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     Rigidbody rb;
 
     bool canJump;
@@ -27,14 +26,21 @@ public class Player : MonoBehaviour
         float dt = Time.deltaTime;
 
         GetKey(dt);
+
+        GameOver();
     }
 
     void OnCollisionEnter(Collision collision) {
+
         if (collision.gameObject.tag == "Plane") {
             canJump = true;
             jumpForce = 0;
 
-            GameManager.instance.SpawnPlane();
+            var plane = collision.gameObject;
+            bool isNewPlane = GameManager.instance.IsNewPlane(plane);
+            if (isNewPlane) {
+                GameManager.instance.SpawnPlane();
+            }
         }
     }
 
@@ -65,6 +71,12 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector3(jumpForce, jumpForce, 0);
             canJump = false;
             transform.localScale = Vector3.one;
+        }
+    }
+
+    void GameOver() {
+        if (transform.position.y < -3) {
+            GameManager.instance.GameOver();
         }
     }
 }
