@@ -47,6 +47,11 @@ public class Player : MonoBehaviour {
 
     void OnCollisionStay(Collision collision) {
         cam.Follow();
+
+        if (collision.gameObject.tag == "Plane" && !canJump) {
+            canJump = true;
+            jumpForce = 0;
+        }
     }
 
     void GetKey(float dt) {
